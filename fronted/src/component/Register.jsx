@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from "axios";
 
 function Register() {
   const [name, setName] = useState('')
@@ -6,15 +7,20 @@ function Register() {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     if (password !== confirm) {
       alert('Passwords do not match')
       return
     }
-    // placeholder: replace with real registration call
-    alert(`Registered ${name} (${email})`)
-    console.log('register', { name, email, password })
+    try {
+      let { data } = await axios.post("http://localhost:3000/user/register", { email, password, name });
+
+    } catch (e) {
+      console.log(e);
+
+    }
+
   }
 
   return (

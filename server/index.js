@@ -4,9 +4,14 @@ const app = express();
 
 const port = 3000;
 
+const cors = require("cors");
+
 const userroute = require("./routes/userroute");
 
 const connectDb = require("./config/db");
+
+app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("<h1>Normal Route</h1>");
