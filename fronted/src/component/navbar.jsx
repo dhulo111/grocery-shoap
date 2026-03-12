@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import './navbar.css'
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false)
   return (
     <header className="site-navbar">
       <div className="nav-container">
-        <a className="brand" href="#">MySite</a>
+        <Link className="brand" href="#">MySite</Link>
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
-          <a href="#">Home</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-          <a href="#register">Register</a>
-          <a href="#login">Login</a>
+          <Link to="/">Home</Link>
+          <Link href="#about">About</Link>
+          <Link href="#services">Services</Link>
+          <Link href="#contact">Contact</Link>
+          <Link to="/register">Register</Link>
+          <Link to="/login">Login</Link>
         </nav>
 
         <button
