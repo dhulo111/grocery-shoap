@@ -1,14 +1,29 @@
+import axios from 'axios'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
+  let navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    // placeholder: replace with real auth call
-    alert(`Logging in as ${email}`)
-    console.log('login', { email, password })
+    try {
+      let { data } = await axios.post("http://localhost:3000/user/login", { email, password });
+
+      alert(data.message);
+
+      localStorage.setItem("tocken", data.tocken);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("userid", data.user._id);
+      localStorage.setItem("role", data.user.role);
+
+      navigate("/");
+      window.location.reload();
+    } catch (e) {
+      alert(e);
+    }
   }
 
   return (

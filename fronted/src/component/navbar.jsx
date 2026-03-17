@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false)
+
+  let tocken = localStorage.getItem("tocken")
+
   return (
     <header className="site-navbar">
       <div className="nav-container">
@@ -14,8 +17,12 @@ function Navbar() {
           <Link href="#about">About</Link>
           <Link href="#services">Services</Link>
           <Link href="#contact">Contact</Link>
-          <Link to="/register">Register</Link>
-          <Link to="/login">Login</Link>
+          {tocken ? <Link to="/profile">Profile</Link> :
+            <>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
+            </>}
+
         </nav>
 
         <button

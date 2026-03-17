@@ -1,8 +1,6 @@
 const express = require("express");
-
+require("dotenv").config();
 const app = express();
-
-const port = 3000;
 
 const cors = require("cors");
 
@@ -21,6 +19,6 @@ app.use("/user", userroute);
 
 connectDb();
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log("server is running on 3000 port");
 });

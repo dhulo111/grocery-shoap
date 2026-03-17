@@ -1,0 +1,67 @@
+/* Simple admin dashboard styles */
+.admin-page {
+  display: flex;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+.admin-main {
+  flex: 1;
+  padding: 20px;
+}
+.admin-main__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.quick-actions .btn {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+}
+.stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  min-width: 140px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.card__title {
+  color: #6b7280;
+}
+.card__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.recent ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.recent li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+.recent img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.recent .meta .name {
+  font-weight: 600;
+}
+.recent .meta .price {
+  color: #6b7280;
+}

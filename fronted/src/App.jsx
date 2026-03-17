@@ -5,18 +5,34 @@ import Login from './component/Login'
 import Register from './component/Register'
 import './component/forms.css'
 import Home from "./component/home"
+import Profile from "./component/profile"
+import AdminDashbord from "./admin/components/admindashbord"
+import ManageProduct from "./admin/components/manageproduct"
 
 function App() {
-
+  let role = localStorage.getItem("role");
 
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-      </Routes>
+      {role == "Admin" ?
+        <>
+          <Routes>
+            <Route path="/admin" element={<AdminDashbord />} >
+           
+            </Route>
+            <Route path="/admin/product" element={<ManageProduct />} />
+          </Routes>
+        </>
+        :
+        <>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </>}
     </>
   )
 }
