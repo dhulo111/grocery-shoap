@@ -58,7 +58,6 @@
 
 .muted { color:#6b7280 }
 
-}
 .product-name {
   font-weight: 600;
 }
@@ -89,7 +88,7 @@
 
 .btn {
   border: 1px solid #ccc;
-  background: #f8f8f8;
+  background: #000000;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;

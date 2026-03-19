@@ -5,6 +5,7 @@ const app = express();
 const cors = require("cors");
 
 const userroute = require("./routes/userroute");
+const productroute=require("./routes/productroute")
 
 const connectDb = require("./config/db");
 
@@ -16,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userroute);
-
+app.use("/product",productroute);
 connectDb();
 
 app.listen(process.env.PORT, () => {

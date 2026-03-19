@@ -19,7 +19,12 @@ function Login() {
       localStorage.setItem("userid", data.user._id);
       localStorage.setItem("role", data.user.role);
 
-      navigate("/");
+      if (data.user.role == "Admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
       window.location.reload();
     } catch (e) {
       alert(e);
