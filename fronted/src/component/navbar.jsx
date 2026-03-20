@@ -17,7 +17,12 @@ function Navbar() {
           <Link href="#about">About</Link>
           <Link href="#services">Services</Link>
           <Link href="#contact">Contact</Link>
-          {tocken ? <Link to="/profile">Profile</Link> :
+          {tocken ?
+            <>
+              <Link to="/product">Product</Link>
+              <Link to="/profile">Profile</Link>
+            </>
+            :
             <>
               <Link to="/register">Register</Link>
               <Link to="/login">Login</Link>

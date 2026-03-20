@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Adminsidebar from '../Adminsidebar'
 import './manageproduct.css'
 import axios from 'axios';
+import { useEffect } from 'react';
 
 
 export default function ManageProduct() {
@@ -13,7 +14,7 @@ export default function ManageProduct() {
   const [rating, setRating] = useState(0);
   const [img, setImg] = useState("")
   const [modalOpen, setModalOpen] = useState(false);
-
+  let [product, setProduct] = useState([]);
 
   async function handlesubmit(e) {
     e.preventDefault();
@@ -36,6 +37,18 @@ export default function ManageProduct() {
     }
   }
 
+  async function getproduct() {
+    try {
+      let data = await axios.get("http://localhost:3000/product/all");
+      setProduct(data.data.product);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    getproduct();
+  }, [])
 
 
   return (
@@ -51,6 +64,32 @@ export default function ManageProduct() {
         </div>
 
 
+        <div className="table-wrap">
+          <table className="product-table">
+            <thead>
+              <th>img</th>
+              <th>name</th>
+              <th>description</th>
+              <th>price</th>
+              <th>rating</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              {product.map((item) => (
+                <tr key={item._id}>
+                  <td>
+                    <img className="product-thumb" src={`http://localhost:3000/upload/${item.img}`} alt={item.pname} />
+                  </td>
+                  <td className="product-name">{item.pname}</td>
+                  <td className="product-desc">{item.description}</td>
+                  <td className="product-price">₹{item.price}</td>
+                  <td className="product-rating">{item.rating}</td>
+                  <td><button>update</button><button>delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {modalOpen && (
           <div className="modal-backdrop" onClick={() => setModalOpen(false)}>

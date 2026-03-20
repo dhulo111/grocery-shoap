@@ -8,6 +8,7 @@ import Home from "./component/home"
 import Profile from "./component/profile"
 import AdminDashbord from "./admin/components/admindashbord"
 import ManageProduct from "./admin/components/manageproduct"
+import Product from "./component/product"
 
 function App() {
   let role = localStorage.getItem("role");
@@ -18,7 +19,7 @@ function App() {
         <>
           <Routes>
             <Route path="/admin" element={<AdminDashbord />} >
-           
+
             </Route>
             <Route path="/admin/product" element={<ManageProduct />} />
           </Routes>
@@ -31,6 +32,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/product" element={<Product />} />
           </Routes>
         </>}
     </>
