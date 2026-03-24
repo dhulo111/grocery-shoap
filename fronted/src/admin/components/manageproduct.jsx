@@ -14,6 +14,7 @@ export default function ManageProduct() {
   const [rating, setRating] = useState(0);
   const [img, setImg] = useState("")
   const [modalOpen, setModalOpen] = useState(false);
+  const [editid, setEditid] = useState();
   let [product, setProduct] = useState([]);
 
   async function handlesubmit(e) {
@@ -25,13 +26,22 @@ export default function ManageProduct() {
     formdata.append('description', description);
     formdata.append('img', img);
     formdata.append('rating', rating);
-    console.log(formdata.get('pname'));
+
     try {
 
-      let { data } = await axios.post("http://localhost:3000/product/add", formdata);
+      if (editid) {
+        let { data } = await axios.put(`http://localhost:3000/product/update/${editid}`, formdata);
 
-      alert(data.message);
-      setModalOpen(false);
+        alert(data.message);
+        setModalOpen(false);
+        window.location.reload;
+      } else {
+
+        let { data } = await axios.post("http://localhost:3000/product/add", formdata);
+
+        alert(data.message);
+        setModalOpen(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -50,6 +60,26 @@ export default function ManageProduct() {
     getproduct();
   }, [])
 
+
+  async function handledelet(id) {
+    try {
+      let { data } = await axios.delete(`http://localhost:3000/product/delete/${id}`);
+      alert(data.message);
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function handleupdate(item) {
+    setModalOpen(true);
+    setEditid(item._id);
+    setPname(item.pname);
+    setPrice(item.price);
+    setDescription(item.description);
+    setRating(item.rating);
+    setImg(item.img);
+  }
 
   return (
     <div className="admin-page">
@@ -84,7 +114,10 @@ export default function ManageProduct() {
                   <td className="product-desc">{item.description}</td>
                   <td className="product-price">₹{item.price}</td>
                   <td className="product-rating">{item.rating}</td>
-                  <td><button>update</button><button>delete</button></td>
+                  <td>
+                    <button onClick={() => handleupdate(item)}>update</button>
+                    <button onClick={() => handledelet(item._id)}>delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -96,14 +129,14 @@ export default function ManageProduct() {
             <div className="modal" onClick={(e) => e.stopPropagation()}>
 
               <form>
-                <label>Product Name<input name="pname" required onChange={(e) => setPname(e.target.value)} /></label>
-                <label>Price<input name="price" required type="number" step="0.01" onChange={(e) => setPrice(e.target.value)} /></label>
+                <label>Product Name<input name="pname" value={pname} required onChange={(e) => setPname(e.target.value)} /></label>
+                <label>Price<input name="price" required type="number" value={price} step="0.01" onChange={(e) => setPrice(e.target.value)} /></label>
 
                 <label>Upload image
                   <input type="file" accept="image/*" onChange={(e) => setImg(e.target.files[0])} />
                 </label>
-                <label>Description<textarea name="description" onChange={(e) => setDescription(e.target.value)} /></label>
-                <label>Rating<input name="rating" type="number" step="0.1" min="0" max="5" onChange={(e) => setRating(e.target.value)} /></label>
+                <label>Description<textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} /></label>
+                <label>Rating<input name="rating" type="number" value={rating} step="0.1" min="0" max="5" onChange={(e) => setRating(e.target.value)} /></label>
 
                 <div className="form-actions">
                   <button type="submit" className="btn primary" onClick={handlesubmit}>add</button>
