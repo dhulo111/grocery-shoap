@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './navbar.css'
 import { Link } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
 
 function Navbar() {
   const [open, setOpen] = useState(false)
@@ -21,6 +22,7 @@ function Navbar() {
             <>
               <Link to="/product">Product</Link>
               <Link to="/profile">Profile</Link>
+              <Link to="/cart"><FaShoppingCart /></Link>
             </>
             :
             <>

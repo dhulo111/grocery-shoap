@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Adminsidebar from '../Adminsidebar'
 import './manageproduct.css'
-import axios from 'axios';
+import axios from '../../utility/axiosinstance';
 import { useEffect } from 'react';
 
 
@@ -30,14 +30,14 @@ export default function ManageProduct() {
     try {
 
       if (editid) {
-        let { data } = await axios.put(`http://localhost:3000/product/update/${editid}`, formdata);
+        let { data } = await axios.put(`/product/update/${editid}`, formdata);
 
         alert(data.message);
         setModalOpen(false);
         window.location.reload;
       } else {
 
-        let { data } = await axios.post("http://localhost:3000/product/add", formdata);
+        let { data } = await axios.post("/product/add", formdata);
 
         alert(data.message);
         setModalOpen(false);
@@ -49,7 +49,7 @@ export default function ManageProduct() {
 
   async function getproduct() {
     try {
-      let data = await axios.get("http://localhost:3000/product/all");
+      let data = await axios.get("/product/all");
       setProduct(data.data.product);
     } catch (e) {
       console.log(e)
@@ -63,7 +63,7 @@ export default function ManageProduct() {
 
   async function handledelet(id) {
     try {
-      let { data } = await axios.delete(`http://localhost:3000/product/delete/${id}`);
+      let { data } = await axios.delete(`/product/delete/${id}`);
       alert(data.message);
       window.location.reload();
     } catch (e) {

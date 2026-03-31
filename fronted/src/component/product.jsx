@@ -1,14 +1,16 @@
-import axios from "axios";
+import axios from "../utility/axiosinstance";
 import { useState } from "react";
 import { useEffect } from "react";
 import "./product.css";
+import { useNavigate } from "react-router-dom";
 
 function Product() {
+  let navigate = useNavigate();
   let [product, setProduct] = useState([]);
-
+  let user_id = localStorage.getItem("user");
   async function getproduct() {
     try {
-      let data = await axios.get("http://localhost:3000/product/all");
+      let data = await axios.get("/product/all");
       setProduct(data.data.product);
     } catch (e) {
       console.log(e)
@@ -18,6 +20,16 @@ function Product() {
   useEffect(() => {
     getproduct();
   }, [])
+
+
+  async function handlecart(id) {
+    try {
+      let { data } = await axios.post("/product/cart/add", { productid: id, userid: user_id });
+      alert(data.message);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -41,8 +53,8 @@ function Product() {
               </div>
               <p className="description">{item.description}</p>
               <div className="actions">
-                <button className="btn btn-primary">Add to Cart</button>
-                <button className="btn btn-secondary">View</button>
+                <button className="btn btn-primary" onClick={() => handlecart(item._id)}>Add to Cart</button>
+                <button className="btn btn-secondary" onClick={() => navigate(`/detail/${item._id}`)}>View</button>
               </div>
             </div>
           );

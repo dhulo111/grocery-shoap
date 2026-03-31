@@ -9,6 +9,9 @@ import Profile from "./component/profile"
 import AdminDashbord from "./admin/components/admindashbord"
 import ManageProduct from "./admin/components/manageproduct"
 import Product from "./component/product"
+import ProductDetail from "./component/productdetail"
+import ProtectedRoute from "./utility/protectedroute"
+import Cart from "./component/cart"
 
 function App() {
   let role = localStorage.getItem("role");
@@ -32,7 +35,13 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/product" element={<Product />} />
+            <Route path="/product" element={
+              <ProtectedRoute>
+                <Product />
+              </ProtectedRoute>
+            } />
+            <Route path="/detail/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </>}
     </>
