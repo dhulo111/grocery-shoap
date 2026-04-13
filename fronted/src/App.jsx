@@ -12,6 +12,7 @@ import Product from "./component/product"
 import ProductDetail from "./component/productdetail"
 import ProtectedRoute from "./utility/protectedroute"
 import Cart from "./component/cart"
+import Contactus from "./component/contactus"
 
 function App() {
   let role = localStorage.getItem("role");
@@ -42,6 +43,7 @@ function App() {
             } />
             <Route path="/detail/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contactus />} />
           </Routes>
         </>}
     </>

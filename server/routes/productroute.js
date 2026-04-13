@@ -6,6 +6,7 @@ const {
   getproduct,
   getcart,
   addtocart,
+  removecart,
   deleteproduct,
   updateproduct,
 } = require("../controller/productcontroller");
@@ -31,8 +32,7 @@ router.post("/add", virifyTocken, isAdmin, upload.single("img"), addproduct);
 // cart routes
 router.post("/cart/add", virifyTocken, addtocart);
 router.get("/cart/get/:id", virifyTocken, getcart);
-
-
+router.delete("/cart/remove/:id/:userid", virifyTocken, removecart);
 
 router.get("/all", virifyTocken, getallproduct);
 router.get("/detail/:id", getproduct);

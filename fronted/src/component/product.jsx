@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Product() {
   let navigate = useNavigate();
   let [product, setProduct] = useState([]);
-  let user_id = localStorage.getItem("user");
+  let user_id = localStorage.getItem("userid");
   async function getproduct() {
     try {
       let data = await axios.get("/product/all");

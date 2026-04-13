@@ -11,7 +11,7 @@ const product = {
 };
 
 const cartschema = mongoose.Schema({
-  userid: { type: mongoose.Types.ObjectId, ref: "User" },
+  userid: { type: mongoose.Types.ObjectId, ref: "User", require: true },
   items: [product],
   totalAmount: { type: Number },
 });

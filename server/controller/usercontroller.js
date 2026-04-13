@@ -1,6 +1,8 @@
 const User = require("../models/user");
 let bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
+let Contact = require("../models/Contact");
+let { transporter } = require("../utility/mail");
 
 async function register(req, res) {
   try {
@@ -68,4 +70,29 @@ async function profile(req, res) {
   }
 }
 
-module.exports = { register, login, profile };
+async function getcontact(req, res) {
+  try {
+    let { name, email, phone, subject, message } = req.body;
+
+    let contact = await Contact.create({
+      name: name,
+      phone: phone,
+      email: email,
+      subject: subject,
+      message: message,
+    });
+
+    await transporter.sendMail({
+      from: email,
+      to: process.env.TO_EMAIL,
+      subject: `new contact ${subject}`,
+      text: `user is send mail from ${email} and phone number is ${phone} and message is: ${message}`,
+    });
+
+    res.status(200).json({ message: "email send sucessfull" });
+  } catch (e) {
+    res.status(500).json({ message: "internal server error", e: e.message });
+  }
+}
+
+module.exports = { register, login, profile, getcontact };

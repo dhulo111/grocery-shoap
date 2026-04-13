@@ -84,7 +84,6 @@ async function addtocart(req, res) {
 
     let product = await Product.findOne({ _id: productid });
 
-    console.log(product);
     if (!product) {
       return res.status(404).json({ message: "product not found" });
     }
@@ -140,11 +139,41 @@ async function getcart(req, res) {
   }
 }
 
+async function removecart(req, res) {
+  try {
+    let { id, userid } = req.params;
+
+    let cart = await Cart.findOne({ userid: userid });
+
+    let item = cart.items.filter((i) => i.productid.toString() == id, 0);
+
+    if (item) {
+      item[0].quentity -= 1;
+    }
+
+    if (item[0].quentity <= 0) {
+      cart.items.remove(item[0]);
+    }
+
+    cart.totalAmount = cart.items.reduce(
+      (curr, item) => curr + item.price * item.quentity,
+      0,
+    );
+
+    await cart.save();
+
+    res.status(200).json({ message: "product remove sucessfull" });
+  } catch (e) {
+    res.status(500).json({ message: "internl server error", e: e.message });
+  }
+}
+
 module.exports = {
   addproduct,
   getallproduct,
   getproduct,
   deleteproduct,
+  removecart,
   addtocart,
   getcart,
   updateproduct,

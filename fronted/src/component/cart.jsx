@@ -1,13 +1,14 @@
 import { useState } from "react";
 import axios from "../utility/axiosinstance";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import "./cart.css";
 
 function Cart() {
   let [cart, setCart] = useState(null);
   let [loading, setLoading] = useState(true);
-
-  let userid = localStorage.getItem("user");
+  let navigate = useNavigate();
+  let userid = localStorage.getItem("userid");
 
   async function getCart() {
     try {
@@ -23,6 +24,16 @@ function Cart() {
   useEffect(() => {
     getCart();
   }, []);
+
+  async function handleremove(id) {
+    try {
+      let { data } = await axios.delete(`/product/cart/remove/${id}/${userid}`);
+
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   if (loading) {
     return <div className="cart-container"><p>Loading cart...</p></div>;
@@ -86,7 +97,7 @@ function Cart() {
               </div>
 
               <div className="item-action">
-                <button className="remove-btn">Remove</button>
+                <button className="remove-btn" onClick={() => handleremove(item.productid)}>Remove</button>
               </div>
             </div>
           ))}
@@ -121,7 +132,7 @@ function Cart() {
             </div>
 
             <button className="checkout-btn">Proceed to Checkout</button>
-            <button className="continue-shopping-btn">Continue Shopping</button>
+            <button className="continue-shopping-btn" onClick={() =>navigate('/product')}>Continue Shopping</button>
           </div>
         </div>
       </div>
