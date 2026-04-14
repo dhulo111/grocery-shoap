@@ -1,5 +1,9 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
+const instance = require("../utility/razorpay");
+
+// product
+
 async function addproduct(req, res) {
   try {
     let { pname, price, description, rating } = req.body;
@@ -168,12 +172,32 @@ async function removecart(req, res) {
   }
 }
 
+// order controller
+
+async function createorder(req, res) {
+  try {
+    let { amount, currency } = req.body;
+
+    const option = {
+      amount: amount * 100,
+      currency: currency || "INR",
+    };
+
+    const order = await instance.orders.create(option);
+
+    res.status(200).json(order);
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" });
+  }
+}
+
 module.exports = {
   addproduct,
   getallproduct,
   getproduct,
   deleteproduct,
   removecart,
+  createorder,
   addtocart,
   getcart,
   updateproduct,

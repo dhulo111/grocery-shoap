@@ -8,6 +8,7 @@ const {
   addtocart,
   removecart,
   deleteproduct,
+  createorder,
   updateproduct,
 } = require("../controller/productcontroller");
 const virifyTocken = require("../middleware/verifytocken");
@@ -33,6 +34,9 @@ router.post("/add", virifyTocken, isAdmin, upload.single("img"), addproduct);
 router.post("/cart/add", virifyTocken, addtocart);
 router.get("/cart/get/:id", virifyTocken, getcart);
 router.delete("/cart/remove/:id/:userid", virifyTocken, removecart);
+
+// order routes
+router.post("/createorder", virifyTocken, createorder);
 
 router.get("/all", virifyTocken, getallproduct);
 router.get("/detail/:id", getproduct);

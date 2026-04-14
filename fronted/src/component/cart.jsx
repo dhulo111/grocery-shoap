@@ -35,6 +35,16 @@ function Cart() {
     }
   }
 
+  async function handlepayment(totalamount) {
+    try {
+      let { data } = await axios.post("/product/createorder", {
+        amount: totalamount, currency: "INR"
+      })
+      console.log(data);
+    } catch (e) { console.log(e.message) };
+  }
+
+
   if (loading) {
     return <div className="cart-container"><p>Loading cart...</p></div>;
   }
@@ -131,8 +141,8 @@ function Cart() {
               </span>
             </div>
 
-            <button className="checkout-btn">Proceed to Checkout</button>
-            <button className="continue-shopping-btn" onClick={() =>navigate('/product')}>Continue Shopping</button>
+            <button className="checkout-btn" onClick={() => handlepayment(cart.totalAmount + Math.round(cart.totalAmount * 0.18))}>Buy Now</button>
+            <button className="continue-shopping-btn" onClick={() => navigate('/product')}>Continue Shopping</button>
           </div>
         </div>
       </div>
