@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "../utility/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import "./cart.css";
+
 
 function Cart() {
   let [cart, setCart] = useState(null);
@@ -40,7 +41,34 @@ function Cart() {
       let { data } = await axios.post("/product/createorder", {
         amount: totalamount, currency: "INR"
       })
-      console.log(data);
+
+      let { amount, currency, id } = data;
+
+      const option = {
+        key: "rzp_test_WgxamtVupSULV6",
+        amount: amount,
+        currency: currency,
+        name: "MySite",
+        description: "one eccomerce site",
+        order_id: id,
+        handler: async (response) => {
+          let { data } = await axios.post("/product/verify", response);
+          alert(data.data.message);
+          navigate("/order");
+          getCart();
+
+        },
+        prefill: {
+          name: "ironman",
+          email: "admin@gmail.com",
+          contact: "1111111111"
+        },
+        theme: { color: "blue" },
+      };
+
+      const paymentobject = new window.Razorpay(option);
+      paymentobject.open();
+
     } catch (e) { console.log(e.message) };
   }
 

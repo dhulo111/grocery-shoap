@@ -25,6 +25,9 @@ const Orderschema = mongoose.Schema(
       enum: ["pending", "paid"],
       default: "pending",
     },
+    paymentid: { type: String },
+    orderid: { type: String },
+    signature: { type: String },
   },
   {
     timestamps: true,

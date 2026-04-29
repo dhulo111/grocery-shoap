@@ -95,4 +95,18 @@ async function getcontact(req, res) {
   }
 }
 
-module.exports = { register, login, profile, getcontact };
+async function getAllUser(req, res) {
+  try {
+    const user = await User.find();
+
+    if (!user) {
+      res.status(404).json({ message: "users not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" });
+  }
+}
+
+module.exports = { register, login, profile, getcontact, getAllUser };

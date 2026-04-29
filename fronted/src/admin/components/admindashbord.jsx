@@ -1,29 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from "../../utility/axiosinstance"
 import Adminsidebar from '../Adminsidebar'
 import './admindashbord.css'
 
 export default function AdminDashbord() {
+  const [product, setProduct] = useState([]);
   const [productsCount, setProductsCount] = useState(0)
   const [usersCount, setUsersCount] = useState(0)
   const [recent, setRecent] = useState([])
+  const [order, setOrders] = useState([]);
+  const [totalrevenue, setTotalrevenue] = useState(0);
 
   useEffect(() => {
     fetchCounts()
+    getAllorder()
   }, [])
+
+  useEffect(() => {
+    setProductsCount(product.length);
+
+    setTotalrevenue(order.reduce((curr, item) => curr + item.totalAmount, 0));
+
+
+  }, [product, order])
 
   async function fetchCounts() {
     try {
-      const pRes = await fetch('/api/products')
-      const products = pRes.ok ? await pRes.json() : []
-      setProductsCount(Array.isArray(products) ? products.length : 0)
-      setRecent(Array.isArray(products) ? products.slice(0, 5) : [])
-
-      const uRes = await fetch('/api/users')
-      const users = uRes.ok ? await uRes.json() : []
-      setUsersCount(Array.isArray(users) ? users.length : 0)
+      let data = await axios.get("/product/all");
+      setProduct(data.data.product);
     } catch (err) {
-      // silent fail for dashboard
+      console.log(err);
+    }
+  }
+
+  async function getAllorder() {
+    try {
+      let data = await axios.get(`/product/getallorder`);
+      setOrders(data.data);
+    } catch (e) {
+      console.log(e);
+      alert("Error fetching orders");
     }
   }
 
@@ -49,6 +66,10 @@ export default function AdminDashbord() {
             <div className="card__title">Users</div>
             <div className="card__value">{usersCount}</div>
           </div>
+          <div className="card">
+            <div className="card__title">Total Revenue</div>
+            <div className="card__value">{totalrevenue}</div>
+          </div>
         </section>
 
         <section className="recent">
@@ -70,3 +91,6 @@ export default function AdminDashbord() {
     </div>
   )
 }
+
+
+// [{},{},{},{}]

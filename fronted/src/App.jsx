@@ -13,6 +13,9 @@ import ProductDetail from "./component/productdetail"
 import ProtectedRoute from "./utility/protectedroute"
 import Cart from "./component/cart"
 import Contactus from "./component/contactus"
+import Myorder from "./component/myorder"
+import Manageorder from "./admin/components/manageorders"
+import Manageuser from "./admin/components/manageUser"
 
 function App() {
   let role = localStorage.getItem("role");
@@ -26,6 +29,8 @@ function App() {
 
             </Route>
             <Route path="/admin/product" element={<ManageProduct />} />
+            <Route path="/admin/order" element={<Manageorder />} />
+            <Route path="/admin/user" element={<Manageuser />} />
           </Routes>
         </>
         :
@@ -44,6 +49,7 @@ function App() {
             <Route path="/detail/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/contact" element={<Contactus />} />
+            <Route path="/order" element={<Myorder />} />
           </Routes>
         </>}
     </>

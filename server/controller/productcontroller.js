@@ -1,7 +1,8 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
+const Order = require("../models/order");
 const instance = require("../utility/razorpay");
-
+const crypto = require("crypto");
 // product
 
 async function addproduct(req, res) {
@@ -191,14 +192,112 @@ async function createorder(req, res) {
   }
 }
 
+async function verifypayment(req, res) {
+  try {
+    let { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      req.body;
+
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedsign = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .update(sign)
+      .digest("hex");
+
+    if (razorpay_signature !== expectedsign) {
+      return res.status(400).json({ message: "signature not valid" });
+    }
+
+    let userid = req.user._id;
+
+    let cart = await Cart.findOne({ userid: userid });
+
+    if (!cart) {
+      res.status(404).json({ message: "cart not found" });
+    }
+
+    const neworder = new Order({
+      userid: userid,
+      items: cart.items.map((item) => ({
+        productid: item.productid,
+        img: item.img,
+        price: item.price,
+        rating: item.rating,
+        quentity: item.quentity,
+        pname: item.pname,
+        description: item.description,
+      })),
+      totalAmount: cart.totalAmount,
+      paymentid: razorpay_payment_id,
+      orderid: razorpay_order_id,
+      signature: razorpay_signature,
+      paymentstatus: "paid",
+    });
+
+    neworder.save();
+
+    await Cart.findOneAndDelete({ userid: userid });
+
+    res.status(200).json("order placed");
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" });
+  }
+}
+
+async function getuserorders(req, res) {
+  try {
+    let { id } = req.params;
+    let order = await Order.find({ userid: id });
+
+    if (!order) {
+      res.status(404).josn({ message: "oreder not found" });
+    }
+    res.status(200).json(order);
+  } catch (e) {
+    res.status(500).json({ message: "internal server error", e: e.message });
+  }
+}
+
+async function getallorder(req, res) {
+  try {
+    let order = await Order.find();
+
+    if (!order) {
+      res.status(404).josn({ message: "oreder not found" });
+    }
+
+    console.log(order);
+    res.status(200).json(order);
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" });
+  }
+}
+
+async function updateorder(req, res) {
+  try {
+    console.log(req.body);
+    const { id } = req.params;
+
+    await Order.findByIdAndUpdate({ _id: id }, { status: req.body.status });
+
+    res.status(200).json({ message: "order updated sucessfull" });
+  } catch (e) {
+    res.status(500).json({ message: "internal server error" });
+  }
+}
+
 module.exports = {
   addproduct,
   getallproduct,
   getproduct,
   deleteproduct,
+  updateorder,
+  getuserorders,
   removecart,
+  verifypayment,
   createorder,
   addtocart,
+  getallorder,
   getcart,
   updateproduct,
 };

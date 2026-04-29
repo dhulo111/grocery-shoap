@@ -6,8 +6,12 @@ const {
   getproduct,
   getcart,
   addtocart,
+  getallorder,
   removecart,
+  getuserorders,
+  verifypayment,
   deleteproduct,
+  updateorder,
   createorder,
   updateproduct,
 } = require("../controller/productcontroller");
@@ -37,6 +41,11 @@ router.delete("/cart/remove/:id/:userid", virifyTocken, removecart);
 
 // order routes
 router.post("/createorder", virifyTocken, createorder);
+router.post("/verify", virifyTocken, verifypayment);
+router.get("/getorder/:id", virifyTocken, getuserorders);
+router.get("/getallorder", virifyTocken, isAdmin, getallorder);
+router.put("/order/:id",virifyTocken,isAdmin,updateorder);
+
 
 router.get("/all", virifyTocken, getallproduct);
 router.get("/detail/:id", getproduct);

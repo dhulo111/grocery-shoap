@@ -5,9 +5,9 @@ import './adminsidebar.css'
 const links = [
   { to: '/admin', label: 'Dashboard', icon: '🏠' },
   { to: '/admin/product', label: 'Manage Product', icon: '📦' },
-  { to: '/admin/users', label: 'Users', icon: '👥' },
-  { to: '/admin/profile', label: 'Profile', icon: '👤' },
-  { to: '/admin/settings', label: 'Settings', icon: '⚙️' },
+  { to: '/admin/order', label: 'Manage Orders', icon: '🍔' },
+  { to: '/admin/user', label: 'Manage User', icon: '🧑‍🧑‍🧒‍🧒' },
+
 ]
 
 export default function Adminsidebar() {
